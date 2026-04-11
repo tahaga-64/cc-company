@@ -21,6 +21,12 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
           &#9632; Dashboard
         </div>
         <div
+          className={`sidebar-item ${view.type === "company" ? "active" : ""}`}
+          onClick={() => onNavigate("company")}
+        >
+          &#9962; Company
+        </div>
+        <div
           className={`sidebar-item ${view.type === "explorer" ? "active" : ""}`}
           onClick={() => onNavigate("explorer")}
         >
