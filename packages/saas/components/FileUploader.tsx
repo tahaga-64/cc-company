@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 
 interface Props {
   mode: "photo" | "scan" | "chat";
@@ -16,12 +16,17 @@ export default function FileUploader({ mode, selectedFile, onFileSelect }: Props
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  if (mode === "chat") return null;
+  // オブジェクトURLを生成し、ファイル変更時に旧URLを破棄
+  const previewUrl = useMemo(
+    () =>
+      selectedFile && ACCEPTED_IMAGE_TYPES.includes(selectedFile.type)
+        ? URL.createObjectURL(selectedFile)
+        : null,
+    [selectedFile]
+  );
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
-  const previewUrl =
-    selectedFile && ACCEPTED_IMAGE_TYPES.includes(selectedFile.type)
-      ? URL.createObjectURL(selectedFile)
-      : null;
+  if (mode === "chat") return null;
 
   const handleFile = (file: File) => {
     if (!ACCEPTED_TYPES.includes(file.type)) {
