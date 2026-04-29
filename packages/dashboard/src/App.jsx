@@ -7,6 +7,7 @@ import DepartmentDetail from "./components/DepartmentDetail";
 import FileTree from "./components/FileTree";
 import GraphView from "./components/GraphView";
 import Search from "./components/Search";
+import CompanyPage from "./components/CompanyPage";
 import "./App.css";
 
 export default function App() {
@@ -57,7 +58,7 @@ export default function App() {
             &#9776;
           </button>
           <h2 className="page-title">
-            {view.type === "dashboard" ? "Dashboard" : view.type === "explorer" ? "Explorer" : view.type === "graph" ? "Graph" : view.type === "search" ? "Search" : view.deptId || ""}
+            {view.type === "company" ? "Company" : view.type === "dashboard" ? "Dashboard" : view.type === "explorer" ? "Explorer" : view.type === "graph" ? "Graph" : view.type === "search" ? "Search" : view.deptId || ""}
           </h2>
           <button className="theme-toggle" onClick={toggleTheme} title={theme === "dark" ? "Light mode" : "Dark mode"}>
             {theme === "dark" ? "☀" : "☽"}
@@ -65,6 +66,7 @@ export default function App() {
           <div className="connection-status" />
         </header>
         <div className="content">
+          {view.type === "company" && <CompanyPage data={data} onNavigate={navigate} />}
           {view.type === "dashboard" && <Dashboard data={data} onNavigate={navigate} />}
           {view.type === "explorer" && <FileTree data={data} onNavigate={navigate} />}
           {view.type === "graph" && <GraphView data={data} />}

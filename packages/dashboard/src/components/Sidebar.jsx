@@ -15,6 +15,12 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
       <div className="sidebar-section">
         <div className="sidebar-section-title">Navigation</div>
         <div
+          className={`sidebar-item ${view.type === "company" ? "active" : ""}`}
+          onClick={() => onNavigate("company")}
+        >
+          &#9670; Company
+        </div>
+        <div
           className={`sidebar-item ${view.type === "dashboard" ? "active" : ""}`}
           onClick={() => onNavigate("dashboard")}
         >
