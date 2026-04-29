@@ -26,32 +26,58 @@ export default function ChatInterface() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeMode, setActiveMode] = useState<Mode>("chat");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const sendMessage = async () => {
-    const trimmed = input.trim();
-    if (!trimmed || isLoading) return;
+  // モード切り替え時にファイルをクリア
+  const handleModeChange = (mode: Mode) => {
+    setActiveMode(mode);
+    setSelectedFile(null);
+  };
 
-    const newUserMsg: Message = { role: "user", content: trimmed };
+  const canSend = (input.trim() || selectedFile !== null) && !isLoading;
+
+  const sendMessage = async () => {
+    if (!canSend) return;
+
+    const trimmed = input.trim();
+    const file = selectedFile;
+
+    // ユーザーメッセージの表示テキスト
+    let displayContent = trimmed;
+    if (file && trimmed) displayContent = `📎 ${file.name}\n${trimmed}`;
+    else if (file) displayContent = `📎 ${file.name}`;
+
     const priorHistory = [...messages];
-    setMessages([...priorHistory, newUserMsg, { role: "assistant", content: "" }]);
+    setMessages([
+      ...priorHistory,
+      { role: "user", content: displayContent },
+      { role: "assistant", content: "" },
+    ]);
     setInput("");
+    setSelectedFile(null);
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: trimmed,
-          history: priorHistory,
-        }),
-      });
+      let res: Response;
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("message", trimmed);
+        formData.append("history", JSON.stringify(priorHistory));
+        formData.append("file", file);
+        res = await fetch("/api/analyze", { method: "POST", body: formData });
+      } else {
+        res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: trimmed, history: priorHistory }),
+        });
+      }
 
       if (!res.ok || !res.body) throw new Error("API error");
 
@@ -80,10 +106,7 @@ export default function ChatInterface() {
               assistantText += parsed.text;
               setMessages((prev) => {
                 const updated = [...prev];
-                updated[updated.length - 1] = {
-                  role: "assistant",
-                  content: assistantText,
-                };
+                updated[updated.length - 1] = { role: "assistant", content: assistantText };
                 return updated;
               });
             }
@@ -129,13 +152,7 @@ export default function ChatInterface() {
         {TABS.map(({ mode, label }) => (
           <button
             key={mode}
-            onClick={() => {
-              if (mode !== "chat") {
-                alert("この機能は近日公開予定です 🚧");
-                return;
-              }
-              setActiveMode(mode);
-            }}
+            onClick={() => handleModeChange(mode)}
             className={`flex-1 py-2.5 text-sm font-medium transition-colors ${
               activeMode === mode
                 ? "text-blue-600 border-b-2 border-blue-600"
@@ -147,8 +164,12 @@ export default function ChatInterface() {
         ))}
       </div>
 
-      {/* FileUploader（Step 2で有効化） */}
-      <FileUploader mode={activeMode} />
+      {/* ファイルアップローダー */}
+      <FileUploader
+        mode={activeMode}
+        selectedFile={selectedFile}
+        onFileSelect={setSelectedFile}
+      />
 
       {/* メッセージリスト */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
@@ -180,18 +201,21 @@ export default function ChatInterface() {
       <div className="border-t border-gray-200 px-4 py-3 bg-white">
         <div className="flex items-end gap-2">
           <textarea
-            ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="質問を入力してください..."
+            placeholder={
+              activeMode === "chat"
+                ? "質問を入力してください..."
+                : "コメントを追加（任意）..."
+            }
             rows={1}
             className="flex-1 resize-none rounded-2xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 max-h-32 overflow-y-auto"
             style={{ minHeight: "44px" }}
           />
           <button
             onClick={sendMessage}
-            disabled={!input.trim() || isLoading}
+            disabled={!canSend}
             className="w-11 h-11 rounded-full bg-blue-600 flex items-center justify-center text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-700 active:bg-blue-800 transition-colors flex-shrink-0"
           >
             <svg
