@@ -3,6 +3,7 @@ import { fetchDashboard } from "./services/api";
 import { useSSE } from "./services/useSSE";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
+import Company from "./components/Company";
 import DepartmentDetail from "./components/DepartmentDetail";
 import FileTree from "./components/FileTree";
 import GraphView from "./components/GraphView";
@@ -57,7 +58,7 @@ export default function App() {
             &#9776;
           </button>
           <h2 className="page-title">
-            {view.type === "dashboard" ? "Dashboard" : view.type === "explorer" ? "Explorer" : view.type === "graph" ? "Graph" : view.type === "search" ? "Search" : view.deptId || ""}
+            {view.type === "dashboard" ? "Dashboard" : view.type === "company" ? "Company" : view.type === "explorer" ? "Explorer" : view.type === "graph" ? "Graph" : view.type === "search" ? "Search" : view.deptId || ""}
           </h2>
           <button className="theme-toggle" onClick={toggleTheme} title={theme === "dark" ? "Light mode" : "Dark mode"}>
             {theme === "dark" ? "☀" : "☽"}
@@ -66,6 +67,7 @@ export default function App() {
         </header>
         <div className="content">
           {view.type === "dashboard" && <Dashboard data={data} onNavigate={navigate} />}
+          {view.type === "company" && <Company data={data} onNavigate={navigate} />}
           {view.type === "explorer" && <FileTree data={data} onNavigate={navigate} />}
           {view.type === "graph" && <GraphView data={data} />}
           {view.type === "search" && <Search onNavigate={navigate} />}
