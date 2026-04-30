@@ -10,7 +10,7 @@ Run the following in a project that has a `.company/` folder:
 npx cc-company-dashboard
 ```
 
-A browser will automatically open at http://localhost:3939 showing your dashboard.
+A browser will automatically open at `http://localhost:3939` showing your dashboard.
 
 ### Options
 

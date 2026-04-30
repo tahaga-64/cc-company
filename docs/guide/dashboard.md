@@ -10,7 +10,7 @@ cc-company の組織状況をブラウザで確認できるオプションツー
 npx cc-company-dashboard
 ```
 
-ブラウザが自動で開き、http://localhost:3939 でダッシュボードが表示されます。
+ブラウザが自動で開き、`http://localhost:3939` でダッシュボードが表示されます。
 
 ### オプション
 
