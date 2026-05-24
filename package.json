@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shin-sibainu/cc-company.git"
+    "url": "git+https://github.com/tahaga-64/cc-company.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "tahaga-64",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Shin-sibainu/cc-company/issues"
+    "url": "https://github.com/tahaga-64/cc-company/issues"
   },
-  "homepage": "https://github.com/Shin-sibainu/cc-company#readme",
+  "homepage": "https://github.com/tahaga-64/cc-company#readme",
   "devDependencies": {
     "vitepress": "^1.6.4"
   }
