@@ -1,7 +1,7 @@
 {
   "name": "cc-company",
   "owner": {
-    "name": "Shin-sibainu"
+    "name": "tahaga-64"
   },
   "metadata": {
     "description": "秘書から始める仮想組織プラグイン。3ステップで即運用開始。"
@@ -13,9 +13,9 @@
       "description": "秘書から始める仮想組織スキル。3ステップで即運用開始、部署は必要に応じて自然に増える。",
       "version": "2.0.0",
       "author": {
-        "name": "Shin-sibainu"
+        "name": "tahaga-64"
       },
-      "repository": "https://github.com/Shin-sibainu/cc-company",
+      "repository": "https://github.com/tahaga-64/cc-company",
       "license": "MIT",
       "category": "productivity",
       "tags": ["company", "organization", "secretary", "productivity", "management"]
