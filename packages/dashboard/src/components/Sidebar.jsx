@@ -15,11 +15,12 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
       <div className="sidebar-section">
         <div className="sidebar-section-title">Navigation</div>
         {[
-          { type: "company",   icon: "&#9670;", label: "Company"   },
-          { type: "dashboard", icon: "&#9632;", label: "Dashboard" },
-          { type: "explorer",  icon: "&#9776;", label: "Explorer"  },
-          { type: "graph",     icon: "&#10023;",label: "Graph"     },
-          { type: "search",    icon: "&#8981;", label: "Search"    },
+          { type: "company",    icon: "&#9670;",  label: "Company"    },
+          { type: "experience", icon: "&#10024;", label: "Experience" },
+          { type: "dashboard",  icon: "&#9632;",  label: "Dashboard"  },
+          { type: "explorer",   icon: "&#9776;",  label: "Explorer"   },
+          { type: "graph",      icon: "&#10023;", label: "Graph"      },
+          { type: "search",     icon: "&#8981;",  label: "Search"     },
         ].map(({ type, icon, label }) => (
           <div
             key={type}

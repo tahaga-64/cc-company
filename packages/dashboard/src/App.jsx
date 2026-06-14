@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { fetchDashboard } from "./services/api";
 import { useSSE } from "./services/useSSE";
 import Sidebar from "./components/Sidebar";
@@ -9,6 +9,8 @@ import GraphView from "./components/GraphView";
 import Search from "./components/Search";
 import CompanyPage from "./components/CompanyPage";
 import "./App.css";
+
+const ExperienceView = lazy(() => import("./components/ExperienceView"));
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -41,6 +43,14 @@ export default function App() {
 
   if (!data) {
     return <div className="loading">Loading...</div>;
+  }
+
+  if (view.type === "experience") {
+    return (
+      <Suspense fallback={<div className="loading">Loading Experience...</div>}>
+        <ExperienceView onBack={() => navigate("company")} />
+      </Suspense>
+    );
   }
 
   return (
