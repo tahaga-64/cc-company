@@ -93,7 +93,7 @@ const FRAG = /* glsl */ `
 
     // Mouse proximity glow — cyan corona
     float md = length(uMouse - vUv);
-    col += vec3(0.008, 0.028, 0.120) * smoothstep(0.60, 0.0, md);
+    col += vec3(0.008, 0.028, 0.120) * (1.0 - smoothstep(0.0, 0.60, md));
 
     gl_FragColor = vec4(col, 1.0);
   }

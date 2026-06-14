@@ -14,36 +14,23 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
 
       <div className="sidebar-section">
         <div className="sidebar-section-title">Navigation</div>
-        <div
-          className={`sidebar-item ${view.type === "company" ? "active" : ""}`}
-          onClick={() => onNavigate("company")}
-        >
-          &#9670; Company
-        </div>
-        <div
-          className={`sidebar-item ${view.type === "dashboard" ? "active" : ""}`}
-          onClick={() => onNavigate("dashboard")}
-        >
-          &#9632; Dashboard
-        </div>
-        <div
-          className={`sidebar-item ${view.type === "explorer" ? "active" : ""}`}
-          onClick={() => onNavigate("explorer")}
-        >
-          &#9776; Explorer
-        </div>
-        <div
-          className={`sidebar-item ${view.type === "graph" ? "active" : ""}`}
-          onClick={() => onNavigate("graph")}
-        >
-          &#10023; Graph
-        </div>
-        <div
-          className={`sidebar-item ${view.type === "search" ? "active" : ""}`}
-          onClick={() => onNavigate("search")}
-        >
-          &#8981; Search
-        </div>
+        {[
+          { type: "company",   icon: "&#9670;", label: "Company"   },
+          { type: "dashboard", icon: "&#9632;", label: "Dashboard" },
+          { type: "explorer",  icon: "&#9776;", label: "Explorer"  },
+          { type: "graph",     icon: "&#10023;",label: "Graph"     },
+          { type: "search",    icon: "&#8981;", label: "Search"    },
+        ].map(({ type, icon, label }) => (
+          <div
+            key={type}
+            role="button"
+            tabIndex={0}
+            className={`sidebar-item ${view.type === type ? "active" : ""}`}
+            onClick={() => onNavigate(type)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onNavigate(type); }}
+            dangerouslySetInnerHTML={{ __html: `${icon} ${label}` }}
+          />
+        ))}
       </div>
 
       {org.business && (
@@ -60,8 +47,11 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
         {departments.map((dept) => (
           <div
             key={dept.id}
+            role="button"
+            tabIndex={0}
             className={`sidebar-item ${view.type === "department" && view.deptId === dept.id ? "active" : ""}`}
             onClick={() => onNavigate("department", dept.id)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onNavigate("department", dept.id); }}
           >
             <span className="sidebar-dot" />
             <span>{dept.name}</span>

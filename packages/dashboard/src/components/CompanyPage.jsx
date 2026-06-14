@@ -217,7 +217,8 @@ export default function CompanyPage({ data, onNavigate }) {
       autoRaf: false,
     });
 
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    const raf = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
     ScrollTrigger.defaults({ scroller: wrapper });
@@ -229,9 +230,9 @@ export default function CompanyPage({ data, onNavigate }) {
     });
 
     return () => {
+      gsap.ticker.remove(raf);
       lenis.destroy();
       ScrollTrigger.defaults({ scroller: window });
-      ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
 
