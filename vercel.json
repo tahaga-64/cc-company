@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd packages/dashboard && npm ci && npm run build",
+  "outputDirectory": "packages/dashboard/dist",
+  "installCommand": "echo 'skip root install'"
+}
